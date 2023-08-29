@@ -1,13 +1,11 @@
 package com.ramij.hashing;
 
+import com.ramij.hashing.exceptions.AttributeMissingException;
+import com.ramij.hashing.hasher.DefaultHashFunction;
 import com.ramij.hashing.hasher.HashFunction;
 import com.ramij.hashing.nodes.Node;
-import com.ramij.hashing.nodes.VirtualNode;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 public final class ConsistentHashBuilder<T extends Node> {
     Collection<T> nodes;
@@ -21,19 +19,26 @@ public final class ConsistentHashBuilder<T extends Node> {
         return new ConsistentHashBuilder<>();
     }
 
-    public void addReplicas(int replicas) {
+    public ConsistentHashBuilder<T> addReplicas(int replicas) {
         noOfReplicas = replicas;
+        return this;
     }
-    public void addNodes(Collection<T > nodes){
+    public ConsistentHashBuilder<T> addNodes(Collection<T > nodes){
         this.nodes=nodes;
+        return this;
     }
 
-    public void addHashFunction(HashFunction h){
+    public ConsistentHashBuilder<T> addHashFunction(HashFunction h){
         this.hashFunction=h;
+        return this;
     }
 
     public ConsistentHashing<T> build() {
-        Collection<VirtualNode> virtualNodes = nodes.stream().map(t -> new VirtualNode<T>(t, noOfReplicas)).collect(Collectors.toList());
+        if(noOfReplicas==0 )
+            throw new AttributeMissingException("No of replicas is Zero");
+        if(hashFunction==null){
+            hashFunction=new DefaultHashFunction();
+        }
         return new ConsistentHashingImpl<>(nodes, hashFunction,noOfReplicas);
     }
 

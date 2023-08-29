@@ -15,10 +15,13 @@ public class ConsistentHashingImpl<T extends Node> implements ConsistentHashing<
 
     public ConsistentHashingImpl(Collection<T> nodes, HashFunction hashFunction, int noOfReplicas) {
         this.noOfReplicas = noOfReplicas;
-        for (T node : nodes) {
-            for (int pos = 1; pos <= noOfReplicas; pos++) {
-                VirtualNode<T> vNode = getVirtualNode(node, pos);
-                ring.put(hashFunction.getHash(vNode.getKey()), vNode);
+        this.hash = hashFunction;
+        if (nodes != null && !nodes.isEmpty()) {
+            for (T node : nodes) {
+                for (int pos = 1; pos <= noOfReplicas; pos++) {
+                    VirtualNode<T> vNode = getVirtualNode(node, pos);
+                    ring.put(hashFunction.getHash(vNode.getKey()), vNode);
+                }
             }
         }
     }
@@ -32,7 +35,7 @@ public class ConsistentHashingImpl<T extends Node> implements ConsistentHashing<
     }
 
     @Override
-    public void addAll(Collection<T> nodes) {
+    public void addAllNodes(Collection<T> nodes) {
         for (T node : nodes) {
             for (int pos = 1; pos <= noOfReplicas; pos++) {
                 VirtualNode<T> vNode = getVirtualNode(node, pos);
@@ -60,11 +63,11 @@ public class ConsistentHashingImpl<T extends Node> implements ConsistentHashing<
     }
 
     @Override
-    public String getNode(String key) {
-        long lastValue=hash.getHash(key);
+    public T getNode(String key) {
+        long lastValue = hash.getHash(key);
         Map.Entry<Long, VirtualNode<T>> longVirtualNodeEntry = ring.higherEntry(lastValue);
-        longVirtualNodeEntry=longVirtualNodeEntry==null ?ring.firstEntry():longVirtualNodeEntry;
-        return longVirtualNodeEntry.getValue().getKey();
+        longVirtualNodeEntry = longVirtualNodeEntry == null ? ring.firstEntry() : longVirtualNodeEntry;
+        return longVirtualNodeEntry.getValue().getOriginalNode();
     }
 
     private VirtualNode<T> getVirtualNode(T node, int position) {

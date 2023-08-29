@@ -41,4 +41,8 @@ public class VirtualNode<T extends Node> implements Node {
     public String getKey() {
         return node.getKey() + "-" + position;
     }
+    public T getOriginalNode(){
+        return node;
+    }
+
 }

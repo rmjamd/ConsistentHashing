@@ -4,21 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="76a12ce1-ab91-4e4c-908c-f1972ad6d7c2" name="Changes" comment="Making Structure of Projects">
+    <list default="true" id="76a12ce1-ab91-4e4c-908c-f1972ad6d7c2" name="Changes" comment="Adding ConsistentHashing Algorithm">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/exceptions/AttributeMissingException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/ConsistentHashBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/ConsistentHashBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/ConsistentHashing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/ConsistentHashing.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/ConsistentHashingImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/ConsistentHashingImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/HashingException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/exceptions/HashingException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/hasher/DefaultHashFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/hasher/DefaultHashFunction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/hasher/HashFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/hasher/HashFunction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/nodes/VirtualNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ramij/hashing/nodes/VirtualNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ramij/hashing/AppTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/ramij/hashing/HashFunctionTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -54,21 +59,24 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
+    "settings.editor.selected.configurable": "editor.preferences.import"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.ramij.hashing" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.ramij.hashing" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.HashFunctionTest">
+  <component name="RunManager" selected="JUnit.HashFunctionTest">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.ramij.hashing.App" />
       <module name="consistent-hashing" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.ramij.hashing.*" />
+          <option name="PATTERN" value="com.ramij.hashing.exceptions.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -81,7 +89,7 @@
       <module name="consistent-hashing" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.ramij.hashing.*" />
+          <option name="PATTERN" value="com.ramij.hashing.exceptions.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -89,8 +97,41 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="HashFunctionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="consistent-hashing" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ramij.hashing.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ramij.hashing" />
+      <option name="MAIN_CLASS_NAME" value="com.ramij.hashing.HashFunctionTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HashFunctionTest.testAddingAndRetrievingNodes" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="consistent-hashing" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ramij.hashing.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ramij.hashing" />
+      <option name="MAIN_CLASS_NAME" value="com.ramij.hashing.HashFunctionTest" />
+      <option name="METHOD_NAME" value="testAddingAndRetrievingNodes" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.HashFunctionTest" />
+        <item itemvalue="JUnit.HashFunctionTest.testAddingAndRetrievingNodes" />
         <item itemvalue="Application.HashFunctionTest" />
         <item itemvalue="Application.App" />
       </list>
@@ -129,13 +170,33 @@
       <option name="project" value="LOCAL" />
       <updated>1693235085264</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Adding ConsistentHashing Algorithm">
+      <option name="closed" value="true" />
+      <created>1693320867789</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1693320867789</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First Commit" />
     <MESSAGE value="Updating Pom" />
     <MESSAGE value="Making Structure of Projects" />
-    <option name="LAST_COMMIT_MESSAGE" value="Making Structure of Projects" />
+    <MESSAGE value="Adding ConsistentHashing Algorithm" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding ConsistentHashing Algorithm" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ramij/hashing/ConsistentHashingImpl.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

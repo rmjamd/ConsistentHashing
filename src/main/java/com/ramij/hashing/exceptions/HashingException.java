@@ -1,4 +1,4 @@
-package com.ramij.hashing;
+package com.ramij.hashing.exceptions;
 
 public class HashingException extends RuntimeException {
     final String message;

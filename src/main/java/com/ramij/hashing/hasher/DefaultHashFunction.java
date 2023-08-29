@@ -1,6 +1,6 @@
 package com.ramij.hashing.hasher;
 
-import com.ramij.hashing.HashingException;
+import com.ramij.hashing.exceptions.HashingException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
