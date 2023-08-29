@@ -9,34 +9,33 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-public class ConsistentHashBuilder<T extends Node, H extends HashFunction> {
+public final class ConsistentHashBuilder<T extends Node> {
     Collection<T> nodes;
-    H hashFunction;
     int noOfReplicas;
+    HashFunction hashFunction;
 
     private ConsistentHashBuilder() {
     }
 
-    public static ConsistentHashBuilder<Node, HashFunction> create() {
+    public static <T extends Node> ConsistentHashBuilder<T> create() {
         return new ConsistentHashBuilder<>();
     }
 
     public void addReplicas(int replicas) {
         noOfReplicas = replicas;
     }
-    public void addNodes(Collection<T> nodes){
+    public void addNodes(Collection<T > nodes){
         this.nodes=nodes;
     }
 
-    public void addHashFunction(H h){
+    public void addHashFunction(HashFunction h){
         this.hashFunction=h;
     }
 
-    public ConsistentHashing<T, H> build() {
+    public ConsistentHashing<T> build() {
         Collection<VirtualNode> virtualNodes = nodes.stream().map(t -> new VirtualNode<T>(t, noOfReplicas)).collect(Collectors.toList());
-        return new ConsistentHashingImpl<T, H>(virtualNodes, hashFunction);
+        return new ConsistentHashingImpl<>(nodes, hashFunction,noOfReplicas);
     }
-
 
 
 }

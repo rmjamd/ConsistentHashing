@@ -1,5 +1,5 @@
 package com.ramij.hashing.hasher;
 
 public interface HashFunction {
-    long getHash(String key);
+    public long getHash(String key);
 }
