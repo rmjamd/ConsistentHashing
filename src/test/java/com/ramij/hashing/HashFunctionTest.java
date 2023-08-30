@@ -7,7 +7,6 @@ import com.ramij.hashing.nodes.ServerNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -123,38 +122,6 @@ public class HashFunctionTest {
         // Allow a 2x standard deviation difference in data distribution
         assertTrue(standardDeviation < mean * 2);
     }
-//    @Test
-//    public void testHashFunctionChangeWithReplicas() {
-//        List<Node> servers = new ArrayList<>();
-//        for (int i = 0; i < 5; i++) {
-//            servers.add(new ServerNode("192.168.1." + i, 8080));
-//        }
-//
-//        // Original ConsistentHashing instance with default hash function
-//        ConsistentHashing<Node> consistentHashing = builder.build();
-//        consistentHashing.addAllNodes(servers);
-//
-//        // New ConsistentHashing instance with Murmur hash function
-//        HashFunction newHashFunction = new MurmurHashFunction(); // Assuming you have this implementation
-//        ConsistentHashing<Node> murmurConsistentHashing = new ConsistentHashingImpl<>(servers, newHashFunction, 3);
-//
-//        int dataPoints = 1000;
-//        int mismatchCount = 0;
-//        for (int i = 0; i < dataPoints; i++) {
-//            Node originalNode = consistentHashing.getNode("data" + i);
-//            Node newNode = murmurConsistentHashing.getNode("data" + i);
-//
-//            if (!originalNode.equals(newNode)) {
-//                mismatchCount++;
-//            }
-//        }
-//
-//        // Expect very few mismatches due to hash function change
-//        assertTrue(mismatchCount < dataPoints * 0.05); // Less than 5% mismatches
-//    }
-
-
-
 
 
 }
