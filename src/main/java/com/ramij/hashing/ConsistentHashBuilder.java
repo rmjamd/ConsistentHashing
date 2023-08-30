@@ -1,15 +1,15 @@
 package com.ramij.hashing;
 
-import com.ramij.hashing.exceptions.AttributeMissingException;
 import com.ramij.hashing.hasher.DefaultHashFunction;
 import com.ramij.hashing.hasher.HashFunction;
 import com.ramij.hashing.nodes.Node;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public final class ConsistentHashBuilder<T extends Node> {
-    Collection<T> nodes;
-    int noOfReplicas;
+    Collection<T> nodes= Collections.emptyList();
+    int noOfReplicas=3;
     HashFunction hashFunction;
 
     private ConsistentHashBuilder() {
@@ -34,8 +34,6 @@ public final class ConsistentHashBuilder<T extends Node> {
     }
 
     public ConsistentHashing<T> build() {
-        if(noOfReplicas==0 )
-            throw new AttributeMissingException("No of replicas is Zero");
         if(hashFunction==null){
             hashFunction=new DefaultHashFunction();
         }

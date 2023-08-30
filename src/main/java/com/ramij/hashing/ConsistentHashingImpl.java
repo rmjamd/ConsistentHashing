@@ -65,9 +65,9 @@ public class ConsistentHashingImpl<T extends Node> implements ConsistentHashing<
     @Override
     public T getNode(String key) {
         long lastValue = hash.getHash(key);
-        Map.Entry<Long, VirtualNode<T>> longVirtualNodeEntry = ring.higherEntry(lastValue);
-        longVirtualNodeEntry = longVirtualNodeEntry == null ? ring.firstEntry() : longVirtualNodeEntry;
-        return longVirtualNodeEntry.getValue().getOriginalNode();
+        Map.Entry<Long, VirtualNode<T>> entry = ring.higherEntry(lastValue);
+        entry = entry == null ? ring.firstEntry() : entry;
+        return entry == null ? null : entry.getValue().getOriginalNode();
     }
 
     private VirtualNode<T> getVirtualNode(T node, int position) {

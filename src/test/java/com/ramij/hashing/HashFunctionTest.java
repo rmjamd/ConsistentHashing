@@ -3,22 +3,158 @@ package com.ramij.hashing;
 import com.ramij.hashing.hasher.DefaultHashFunction;
 import com.ramij.hashing.hasher.HashFunction;
 import com.ramij.hashing.nodes.Node;
-import com.ramij.hashing.nodes.SampleNode;
-import com.ramij.hashing.nodes.VirtualNode;
+import com.ramij.hashing.nodes.ServerNode;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HashFunctionTest {
-    public static void main(String[] args) {
-        HashFunction hash = new DefaultHashFunction();
 
-        Node node1 = new SampleNode("sample node 1");
-        Node node2 = new SampleNode("sample node 2");
-        Node node3 = new SampleNode("sample node 3");
-        VirtualNode<Node> v1 = new VirtualNode<>(node1, 1);
-        VirtualNode<Node> v2 = new VirtualNode<>(node1, 2);
-        VirtualNode<Node> v3 = new VirtualNode<>(node1, 3);
-        System.out.println(node1 + " -> " + hash.getHash(v1.getKey()));
-        System.out.println(node2 + " -> " + hash.getHash(v2.getKey()));
-        System.out.println(node3 + " -> " + hash.getHash(v3.getKey()));
+    private ConsistentHashBuilder<Node> builder;
+
+    @BeforeEach
+    public void setUp() {
+        builder = ConsistentHashBuilder.create().addReplicas(3);
     }
+
+    @Test
+    public void testAddingAndRetrievingNodes() {
+        ServerNode server1 = new ServerNode("192.168.1.1", 8080);
+        ServerNode server2 = new ServerNode("192.168.1.2", 8080);
+
+        ConsistentHashing<Node> consistentHashing = builder.build();
+        consistentHashing.addAllNodes(List.of(server1, server2));
+
+        assertEquals(server1, consistentHashing.getNode("user123"));
+    }
+
+    @Test
+    public void testRemovingNodes() {
+        ServerNode server1 = new ServerNode("192.168.1.1", 8080);
+        ServerNode server2 = new ServerNode("192.168.1.2", 8080);
+
+        ConsistentHashing<Node> consistentHashing = builder.build();
+        consistentHashing.addAllNodes(List.of(server1, server2));
+
+        assertEquals(server1, consistentHashing.getNode("user123"));
+
+        consistentHashing.removeNode(server1);
+
+        assertEquals(server2, consistentHashing.getNode("user123"));
+    }
+
+    @Test
+    public void testAddingReplicas() {
+        HashFunction customHash = new DefaultHashFunction();
+
+        ConsistentHashing<Node> customHashing = builder.addHashFunction(customHash).build();
+        ServerNode server1 = new ServerNode("192.168.1.1", 8080);
+
+        customHashing.addAllNodes(List.of(server1));
+
+        assertNotNull(customHashing.getNode("data123"));
+    }
+
+    @Test
+    public void testAddingAndRemovingMultipleNodes() {
+        List<Node> servers = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            servers.add(new ServerNode("192.168.1." + i, 8080));
+        }
+
+        ConsistentHashing<Node> consistentHashing = builder.build();
+        consistentHashing.addAllNodes(servers);
+
+        assertNotNull(consistentHashing.getNode("user50"));
+
+        consistentHashing.removeAll(servers);
+
+        assertNull(consistentHashing.getNode("user50"));
+    }
+
+    @Test
+    public void testChangingHashFunction() {
+        HashFunction customHash2 = new DefaultHashFunction();
+
+        ConsistentHashing<Node> complexHashing = builder.addHashFunction(customHash2).build();
+        ServerNode server1 = new ServerNode("172.16.0.1", 8080);
+
+        complexHashing.addNode(server1);
+
+        assertNotNull(complexHashing.getNode("data300"));
+
+        complexHashing.removeNode(server1);
+
+        assertNull(complexHashing.getNode("data300"));
+    }
+    @Test
+    public void testLoadBalancingWithReplicas() {
+        List<Node> servers = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            servers.add(new ServerNode("192.168.1." + i, 8080));
+        }
+
+        ConsistentHashing<Node> consistentHashing = builder.build();
+        consistentHashing.addAllNodes(servers);
+
+        // Add more data points and check if they are balanced across nodes
+        int dataPoints = 1000;
+        Map<Node, Integer> nodeDataCounts = new HashMap<>();
+        for (int i = 0; i < dataPoints; i++) {
+            Node node = consistentHashing.getNode("data" + i);
+            nodeDataCounts.put(node, nodeDataCounts.getOrDefault(node, 0) + 1);
+        }
+
+        // Calculate the standard deviation of data distribution
+        double mean = dataPoints / servers.size();
+        double variance = nodeDataCounts.values().stream()
+                .mapToDouble(count -> Math.pow(count - mean, 2))
+                .average()
+                .orElse(0);
+        double standardDeviation = Math.sqrt(variance);
+
+        // Allow a 2x standard deviation difference in data distribution
+        assertTrue(standardDeviation < mean * 2);
+    }
+//    @Test
+//    public void testHashFunctionChangeWithReplicas() {
+//        List<Node> servers = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            servers.add(new ServerNode("192.168.1." + i, 8080));
+//        }
+//
+//        // Original ConsistentHashing instance with default hash function
+//        ConsistentHashing<Node> consistentHashing = builder.build();
+//        consistentHashing.addAllNodes(servers);
+//
+//        // New ConsistentHashing instance with Murmur hash function
+//        HashFunction newHashFunction = new MurmurHashFunction(); // Assuming you have this implementation
+//        ConsistentHashing<Node> murmurConsistentHashing = new ConsistentHashingImpl<>(servers, newHashFunction, 3);
+//
+//        int dataPoints = 1000;
+//        int mismatchCount = 0;
+//        for (int i = 0; i < dataPoints; i++) {
+//            Node originalNode = consistentHashing.getNode("data" + i);
+//            Node newNode = murmurConsistentHashing.getNode("data" + i);
+//
+//            if (!originalNode.equals(newNode)) {
+//                mismatchCount++;
+//            }
+//        }
+//
+//        // Expect very few mismatches due to hash function change
+//        assertTrue(mismatchCount < dataPoints * 0.05); // Less than 5% mismatches
+//    }
+
+
+
+
 
 }
