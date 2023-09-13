@@ -13,18 +13,18 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-public class HashFunctionTest {
+ 
+class HashFunctionTest {
 
     private ConsistentHashBuilder<Node> builder;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         builder = ConsistentHashBuilder.create().addReplicas(3);
     }
 
     @Test
-    public void testAddingAndRetrievingNodes() {
+     void testAddingAndRetrievingNodes() {
         ServerNode server1 = new ServerNode("192.168.1.1", 8080);
         ServerNode server2 = new ServerNode("192.168.1.2", 8080);
 
@@ -35,7 +35,7 @@ public class HashFunctionTest {
     }
 
     @Test
-    public void testRemovingNodes() {
+     void testRemovingNodes() {
         ServerNode server1 = new ServerNode("192.168.1.1", 8080);
         ServerNode server2 = new ServerNode("192.168.1.2", 8080);
 
@@ -50,7 +50,7 @@ public class HashFunctionTest {
     }
 
     @Test
-    public void testAddingReplicas() {
+     void testAddingReplicas() {
         HashFunction customHash = new DefaultHashFunction();
 
         ConsistentHashing<Node> customHashing = builder.addHashFunction(customHash).build();
@@ -62,7 +62,7 @@ public class HashFunctionTest {
     }
 
     @Test
-    public void testAddingAndRemovingMultipleNodes() {
+     void testAddingAndRemovingMultipleNodes() {
         List<Node> servers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             servers.add(new ServerNode("192.168.1." + i, 8080));
@@ -79,7 +79,7 @@ public class HashFunctionTest {
     }
 
     @Test
-    public void testChangingHashFunction() {
+     void testChangingHashFunction() {
         HashFunction customHash2 = new DefaultHashFunction();
 
         ConsistentHashing<Node> complexHashing = builder.addHashFunction(customHash2).build();
@@ -94,7 +94,7 @@ public class HashFunctionTest {
         assertNull(complexHashing.getNode("data300"));
     }
     @Test
-    public void testLoadBalancingWithReplicas() {
+     void testLoadBalancingWithReplicas() {
         List<Node> servers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             servers.add(new ServerNode("192.168.1." + i, 8080));
