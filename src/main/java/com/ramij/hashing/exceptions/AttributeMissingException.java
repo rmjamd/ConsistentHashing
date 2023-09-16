@@ -1,7 +1,7 @@
 package com.ramij.hashing.exceptions;
 
 public class AttributeMissingException extends RuntimeException {
-    String message;
+    final String message;
 
     public AttributeMissingException(String s) {
         super(s);
