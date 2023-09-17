@@ -1,6 +1,5 @@
 package com.ramij.hashing;
 
-import com.ramij.hashing.exceptions.HashingException;
 import com.ramij.hashing.hasher.DefaultHashFunction;
 import com.ramij.hashing.hasher.HashFunction;
 import com.ramij.hashing.nodes.Node;
@@ -48,9 +47,6 @@ public final class ConsistentHashBuilder <T extends Node> {
 	public ConsistentHashing <T> build () {
 		if (hashFunction == null) {
 			hashFunction = new DefaultHashFunction();
-		}
-		if (nodes.isEmpty()) {
-			throw new HashingException("Node List is Empty!");
 		}
 		return new ConsistentHashingImpl <>(nodes, hashFunction, noOfReplicas);
 	}

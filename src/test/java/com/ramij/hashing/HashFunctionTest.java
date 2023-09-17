@@ -112,7 +112,7 @@ class HashFunctionTest {
         }
 
         // Calculate the standard deviation of data distribution
-        double mean = dataPoints / servers.size();
+        double mean = (double) dataPoints / servers.size();
         double variance = nodeDataCounts.values().stream()
                 .mapToDouble(count -> Math.pow(count - mean, 2))
                 .average()
