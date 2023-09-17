@@ -38,11 +38,6 @@ public final class ConsistentHashBuilder <T extends Node> {
 	}
 
 
-	public ConsistentHashBuilder <T> addNode (T node) {
-		this.nodes.add(node);
-		return this;
-	}
-
 
 	public ConsistentHashBuilder <T> addHashFunction (HashFunction h) {
 		this.hashFunction = h;
